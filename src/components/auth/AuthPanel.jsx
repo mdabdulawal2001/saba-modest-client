@@ -14,10 +14,22 @@ export default function AuthPanel({ mode, callbackUrl = "/", googleCallbackUrl =
   const safeDestination = getSafeCallbackUrl(callbackUrl);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmVisible, setConfirmVisible] = useState(false);
+  const [passwordValue, setPasswordValue] = useState("");
+  const [confirmPasswordValue, setConfirmPasswordValue] = useState("");
+  const [confirmTouched, setConfirmTouched] = useState(false);
+  const [submitAttempted, setSubmitAttempted] = useState(false);
   const [busy, setBusy] = useState(false);
   const submitting = useRef(false);
   const [sessionResolved, setSessionResolved] = useState(false);
   const [formError, setFormError] = useState("");
+  const passwordError = isRegister && passwordValue.length < 8 && (passwordValue.length > 0 || submitAttempted)
+    ? "Password must be at least 8 characters."
+    : "";
+  const confirmPasswordError = isRegister && !confirmPasswordValue && (confirmTouched || submitAttempted)
+    ? "Please confirm your password."
+    : isRegister && confirmPasswordValue && confirmPasswordValue !== passwordValue
+      ? "Passwords do not match."
+      : "";
   const router = useRouter();
   const { data: session, isPending: sessionPending } = authClient.useSession();
 
@@ -35,21 +47,31 @@ export default function AuthPanel({ mode, callbackUrl = "/", googleCallbackUrl =
     event.preventDefault();
     if (submitting.current) return;
     setFormError("");
+    setSubmitAttempted(true);
     const form = new FormData(event.currentTarget);
     const name = String(form.get("name") || "").trim();
     const email = String(form.get("email") || "").trim();
     const password = String(form.get("password") || "");
+    const confirmPassword = String(form.get("confirmPassword") || "");
     const image = String(form.get("image") || "").trim();
 
     if (isRegister && name.length < 2) {
       setFormError("Please enter a name with at least 2 characters.");
       return;
     }
-    if (isRegister && password !== form.get("confirmPassword")) {
-      setFormError("Your passwords do not match.");
+    if (isRegister && password.length < 8) {
+      setPasswordValue(password);
       return;
     }
-    if (password.length < 8) {
+    if (isRegister && !confirmPassword) {
+      setConfirmPasswordValue(confirmPassword);
+      return;
+    }
+    if (isRegister && password !== confirmPassword) {
+      setConfirmPasswordValue(confirmPassword);
+      return;
+    }
+    if (!isRegister && password.length < 8) {
       setFormError("Password must be at least 8 characters.");
       return;
     }
@@ -83,6 +105,10 @@ export default function AuthPanel({ mode, callbackUrl = "/", googleCallbackUrl =
       if (!result.data) throw new Error("Authentication did not return an account. Please try again.");
 
       if (isRegister) {
+        const signOutResult = await authClient.signOut();
+        if (signOutResult.error) {
+          throw new Error(`Account created, but sign-out failed: ${signOutResult.error.message || "Please sign out and try again."}`);
+        }
         toast.success("Account created successfully. Please sign in.");
         const loginUrl = `/login?callbackUrl=${encodeURIComponent(safeDestination)}`;
         router.replace(loginUrl);
@@ -127,7 +153,7 @@ export default function AuthPanel({ mode, callbackUrl = "/", googleCallbackUrl =
             <p className="text-center text-sm text-muted">You are signed in. Taking you back to your page…</p>
           ) : (
             <>
-              <form onSubmit={submit} className="flex flex-col gap-4">
+              <form onSubmit={submit} onInvalid={() => setSubmitAttempted(true)} className="flex flex-col gap-4">
                 {isRegister && (
                   <label className="block text-sm font-semibold">
                     Full name
@@ -171,7 +197,11 @@ export default function AuthPanel({ mode, callbackUrl = "/", googleCallbackUrl =
                       minLength={8}
                       required
                       placeholder={isRegister ? "At least 8 characters" : "Your password"}
-                      className="min-h-12 w-full rounded-xl border border-line bg-background pl-11 pr-12 text-sm font-normal"
+                      value={isRegister ? passwordValue : undefined}
+                      onChange={isRegister ? (event) => setPasswordValue(event.target.value) : undefined}
+                      aria-invalid={Boolean(passwordError)}
+                      aria-describedby={passwordError ? "password-error" : undefined}
+                      className={`min-h-12 w-full rounded-xl border bg-background pl-11 pr-12 text-sm font-normal ${passwordError ? "border-red-500 focus-visible:border-red-500" : "border-line"}`}
                     />
                     <button
                       type="button"
@@ -182,6 +212,7 @@ export default function AuthPanel({ mode, callbackUrl = "/", googleCallbackUrl =
                       {passwordVisible ? <EyeOff size={17} /> : <Eye size={17} />}
                     </button>
                   </span>
+                  {passwordError && <span id="password-error" role="alert" className="mt-1.5 block text-xs font-normal text-red-700 dark:text-red-300">{passwordError}</span>}
                 </label>
                 {isRegister && (
                   <label className="block text-sm font-semibold">
@@ -195,7 +226,12 @@ export default function AuthPanel({ mode, callbackUrl = "/", googleCallbackUrl =
                         minLength={8}
                         required
                         placeholder="Enter your password again"
-                        className="min-h-12 w-full rounded-xl border border-line bg-background pl-11 pr-12 text-sm font-normal"
+                        value={confirmPasswordValue}
+                        onChange={(event) => setConfirmPasswordValue(event.target.value)}
+                        onBlur={() => setConfirmTouched(true)}
+                        aria-invalid={Boolean(confirmPasswordError)}
+                        aria-describedby={confirmPasswordError ? "confirm-password-error" : undefined}
+                        className={`min-h-12 w-full rounded-xl border bg-background pl-11 pr-12 text-sm font-normal ${confirmPasswordError ? "border-red-500 focus-visible:border-red-500" : "border-line"}`}
                       />
                       <button
                         type="button"
@@ -206,6 +242,7 @@ export default function AuthPanel({ mode, callbackUrl = "/", googleCallbackUrl =
                         {confirmVisible ? <EyeOff size={17} /> : <Eye size={17} />}
                       </button>
                     </span>
+                    {confirmPasswordError && <span id="confirm-password-error" role="alert" className="mt-1.5 block text-xs font-normal text-red-700 dark:text-red-300">{confirmPasswordError}</span>}
                   </label>
                 )}
                 {isRegister && (
