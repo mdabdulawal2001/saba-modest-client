@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { startTransition, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, LockKeyhole, Mail, UserRound } from "lucide-react";
 import toast from "react-hot-toast";
@@ -9,23 +9,27 @@ import GoogleLoginButton from "@/components/auth/GoogleLoginButton";
 import { authClient } from "@/lib/auth-client";
 import { getSafeCallbackUrl } from "@/lib/utils";
 
-export default function AuthPanel({ mode, callbackUrl = "/items", oauthError = false }) {
+export default function AuthPanel({ mode, callbackUrl = "/", googleCallbackUrl = "/items", oauthError = false }) {
   const isRegister = mode === "register";
   const safeDestination = getSafeCallbackUrl(callbackUrl);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmVisible, setConfirmVisible] = useState(false);
   const [busy, setBusy] = useState(false);
   const submitting = useRef(false);
+  const [sessionResolved, setSessionResolved] = useState(false);
   const [formError, setFormError] = useState("");
   const router = useRouter();
   const { data: session, isPending: sessionPending } = authClient.useSession();
 
   useEffect(() => {
-    if (session?.user) {
+    if (!sessionPending) startTransition(() => setSessionResolved(true));
+  }, [sessionPending]);
+
+  useEffect(() => {
+    if (sessionResolved && session?.user && !submitting.current) {
       router.replace(safeDestination);
-      router.refresh();
     }
-  }, [router, safeDestination, session?.user]);
+  }, [router, safeDestination, session?.user, sessionResolved]);
 
   const submit = async (event) => {
     event.preventDefault();
@@ -78,9 +82,14 @@ export default function AuthPanel({ mode, callbackUrl = "/items", oauthError = f
       if (result.error) throw new Error(result.error.message || (isRegister ? "Registration failed." : "Sign-in failed."));
       if (!result.data) throw new Error("Authentication did not return an account. Please try again.");
 
-      toast.success(isRegister ? "Your account is ready." : "Welcome back.");
-      router.replace(safeDestination);
-      router.refresh();
+      if (isRegister) {
+        toast.success("Account created successfully. Please sign in.");
+        const loginUrl = `/login?callbackUrl=${encodeURIComponent(safeDestination)}`;
+        router.replace(loginUrl);
+      } else {
+        toast.success("Welcome back.");
+        router.replace(safeDestination);
+      }
     } catch (error) {
       setFormError(error.message || "The request could not be completed.");
       toast.error(error.message || "The request could not be completed.");
@@ -112,7 +121,7 @@ export default function AuthPanel({ mode, callbackUrl = "/items", oauthError = f
             </p>
           )}
 
-          {sessionPending ? (
+          {!sessionResolved ? (
             <div className="skeleton h-12 rounded-xl" aria-label="Checking your session" />
           ) : session?.user ? (
             <p className="text-center text-sm text-muted">You are signed in. Taking you back to your page…</p>
@@ -226,7 +235,7 @@ export default function AuthPanel({ mode, callbackUrl = "/items", oauthError = f
                   {busy ? (isRegister ? "Creating account…" : "Signing in…") : (isRegister ? "Create account" : "Sign in")}
                 </button>
               </form>
-              <GoogleLoginButton callbackUrl={safeDestination} disabled={busy} />
+              <GoogleLoginButton callbackUrl={getSafeCallbackUrl(googleCallbackUrl, "/items")} disabled={busy} />
               <p className="mt-6 text-center text-sm text-muted">
                 {isRegister ? "Already have an account?" : "New to SABA MODEST?"}{" "}
                 <Link

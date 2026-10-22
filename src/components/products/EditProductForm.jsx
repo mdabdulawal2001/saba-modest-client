@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { startTransition, useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { authClient } from "@/lib/auth-client";
@@ -20,7 +20,9 @@ function productOwnerId(product) {
 export default function EditProductForm({ id }) {
   const router = useRouter();
   const { data: session, isPending: sessionPending } = authClient.useSession();
+  const sessionUserId = session?.user?.id;
   const [product, setProduct] = useState(null);
+  const [sessionResolved, setSessionResolved] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [confirmationOpen, setConfirmationOpen] = useState(false);
@@ -31,7 +33,7 @@ export default function EditProductForm({ id }) {
   const loadProduct = useCallback(
     () => getProductById(id)
       .then((item) => {
-        if (productOwnerId(item) !== String(session?.user?.id || "")) {
+        if (productOwnerId(item) !== String(sessionUserId || "")) {
           setError("You do not have permission to edit this product.");
           return;
         }
@@ -43,17 +45,21 @@ export default function EditProductForm({ id }) {
       .finally(() => {
         setLoading(false);
       }),
-    [id, session],
+    [id, sessionUserId],
   );
 
   useEffect(() => {
-    if (sessionPending) return;
-    if (!session?.user) {
+    if (!sessionPending) startTransition(() => setSessionResolved(true));
+  }, [sessionPending]);
+
+  useEffect(() => {
+    if (!sessionResolved) return;
+    if (!sessionUserId) {
       router.replace(`/login?callbackUrl=${encodeURIComponent(`/items/edit/${id}`)}`);
       return;
     }
     loadProduct();
-  }, [id, loadProduct, router, session?.user, sessionPending]);
+  }, [id, loadProduct, router, sessionResolved, sessionUserId]);
 
   const submit = (event) => {
     event.preventDefault();
@@ -106,7 +112,7 @@ export default function EditProductForm({ id }) {
     }
   };
 
-  if (sessionPending || loading) return <FormSkeleton fields={7} />;
+  if (!sessionResolved || loading) return <FormSkeleton fields={7} />;
   if (error && !product) return <ErrorState message={error} onRetry={() => {
     setError("");
     setLoading(true);

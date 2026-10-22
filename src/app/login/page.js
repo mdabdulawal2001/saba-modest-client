@@ -12,7 +12,8 @@ export default async function LoginPage({ searchParams }) {
     <main className="site-container flex flex-1 items-center justify-center py-8">
       <AuthPanel
         mode="login"
-        callbackUrl={getSafeCallbackUrl(params?.callbackUrl)}
+        callbackUrl={getSafeCallbackUrl(params?.callbackUrl, "/")}
+        googleCallbackUrl={getSafeCallbackUrl(params?.callbackUrl, "/items")}
         oauthError={params?.oauthError === "google"}
       />
     </main>

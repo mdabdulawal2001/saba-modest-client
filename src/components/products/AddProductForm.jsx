@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { siteConfig } from "@/config/site";
 import { createProduct } from "@/lib/api";
@@ -13,10 +13,12 @@ const fieldClass = "mt-2 min-h-12 w-full rounded-xl border border-line bg-backgr
 export default function AddProductForm() {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
+  const submitting = useRef(false);
   const [error, setError] = useState("");
 
   const submit = async (event) => {
     event.preventDefault();
+    if (submitting.current) return;
     setError("");
     const form = new FormData(event.currentTarget);
     const image = String(form.get("image") || "").trim();
@@ -42,6 +44,7 @@ export default function AddProductForm() {
       featured: form.get("featured") === "on",
     };
 
+    submitting.current = true;
     setBusy(true);
     try {
       const created = await createProduct(product);
@@ -52,6 +55,7 @@ export default function AddProductForm() {
       setError(requestError.message);
       toast.error(requestError.message);
     } finally {
+      submitting.current = false;
       setBusy(false);
     }
   };

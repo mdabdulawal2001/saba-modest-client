@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { startTransition } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Pencil, Plus, Trash2 } from "lucide-react";
@@ -28,7 +29,9 @@ function ProductActions({ onEdit, onDelete }) {
 
 export default function ManageProducts() {
   const router = useRouter();
-  const { data: session, isPending } = authClient.useSession();
+  const { data: session, isPending: sessionPending } = authClient.useSession();
+  const sessionUserId = session?.user?.id;
+  const [sessionResolved, setSessionResolved] = useState(false);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -39,6 +42,10 @@ export default function ManageProducts() {
   const [deleteBusy, setDeleteBusy] = useState(false);
   const deleteInFlight = useRef(false);
   const pendingPageScroll = useRef(false);
+
+  useEffect(() => {
+    if (!sessionPending) startTransition(() => setSessionResolved(true));
+  }, [sessionPending]);
 
   const loadProducts = useCallback(async (requestedPage = page) => {
     setLoading(true);
@@ -60,8 +67,8 @@ export default function ManageProducts() {
   }, [page]);
 
   useEffect(() => {
-    if (isPending) return;
-    if (!session?.user) {
+    if (!sessionResolved) return;
+    if (!sessionUserId) {
       router.replace(`/login?callbackUrl=${encodeURIComponent("/items/manage")}`);
       return;
     }
@@ -86,7 +93,7 @@ export default function ManageProducts() {
     return () => {
       active = false;
     };
-  }, [isPending, page, router, session?.user]);
+  }, [page, router, sessionResolved, sessionUserId]);
 
   useEffect(() => {
     if (!loading && pendingPageScroll.current) {
