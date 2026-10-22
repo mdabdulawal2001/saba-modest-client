@@ -107,9 +107,12 @@ npm install
 Create a `.env.local` file in the frontend project root:
 
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:5000
-NEXT_PUBLIC_BETTER_AUTH_URL=http://localhost:5000
+NEXT_PUBLIC_API_URL=your_api_url
+NEXT_PUBLIC_BETTER_AUTH_URL=your_base_url
 BETTER_AUTH_SECRET=your_better_auth_secret
+MONGODB_URI=your_mongodb_connection_string
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
 ```
 
 Replace the example values with your actual configuration. The API URL and Better Auth URL must match the local backend/authentication setup.
@@ -142,7 +145,7 @@ Create a `.env` file in the backend project root:
 PORT=5000
 MONGODB_URI=your_mongodb_connection_string
 BETTER_AUTH_SECRET=your_better_auth_secret
-NEXT_PUBLIC_BETTER_AUTH_URL=http://localhost:5000
+BETTER_AUTH_URL=your_base_url
 GOOGLE_CLIENT_ID=your_google_client_id
 GOOGLE_CLIENT_SECRET=your_google_client_secret
 ```
