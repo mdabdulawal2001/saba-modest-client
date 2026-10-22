@@ -1,27 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { FcGoogle } from "react-icons/fc";
 import toast from "react-hot-toast";
 import { authClient, GOOGLE_LOGIN_PENDING_KEY } from "@/lib/auth-client";
 import { getSafeCallbackUrl } from "@/lib/utils";
 
-const enabled = process.env.NEXT_PUBLIC_GOOGLE_AUTH_ENABLED === "true";
-
-export default function GoogleLoginButton({ callbackUrl = "/items" }) {
+export default function GoogleLoginButton({ callbackUrl = "/items", disabled = false }) {
   const [busy, setBusy] = useState(false);
-  const router = useRouter();
-
-  if (!enabled) return null;
 
   const signIn = async () => {
+    if (busy || disabled) return;
     setBusy(true);
     const destination = getSafeCallbackUrl(callbackUrl);
     try {
       const result = await authClient.signIn.social({
         provider: "google",
         callbackURL: `${window.location.origin}${destination}`,
-        errorCallbackURL: `${window.location.origin}/login?oauthError=google`,
+        errorCallbackURL: `${window.location.origin}/login?oauthError=google&callbackUrl=${encodeURIComponent(destination)}`,
       });
       if (result.error) throw new Error(result.error.message || "Google sign-in could not start.");
       if (!result.data?.url) throw new Error("Google sign-in did not return a redirect URL. Please try again.");
@@ -31,7 +27,6 @@ export default function GoogleLoginButton({ callbackUrl = "/items" }) {
       window.sessionStorage.removeItem(GOOGLE_LOGIN_PENDING_KEY);
       toast.error(error.message || "Google sign-in could not start.");
       setBusy(false);
-      router.refresh();
     }
   };
 
@@ -45,10 +40,10 @@ export default function GoogleLoginButton({ callbackUrl = "/items" }) {
       <button
         type="button"
         onClick={signIn}
-        disabled={busy}
-        className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-3 rounded-full border border-line bg-surface text-sm font-semibold transition hover:border-brand/50 hover:bg-background disabled:opacity-60"
+        disabled={busy || disabled}
+        className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-3 rounded-full border border-line bg-surface text-sm font-semibold transition hover:border-brand/50 hover:bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        <span aria-hidden="true" className="grid h-5 w-5 place-items-center rounded-full border border-line text-xs font-bold text-[#4285f4]">G</span>
+        <FcGoogle aria-hidden="true" size={20} />
         {busy ? "Connecting to Google…" : "Continue with Google"}
       </button>
     </div>

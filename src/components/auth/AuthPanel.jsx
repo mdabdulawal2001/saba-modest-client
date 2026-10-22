@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, LockKeyhole, Mail, UserRound } from "lucide-react";
 import toast from "react-hot-toast";
@@ -15,6 +15,7 @@ export default function AuthPanel({ mode, callbackUrl = "/items", oauthError = f
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmVisible, setConfirmVisible] = useState(false);
   const [busy, setBusy] = useState(false);
+  const submitting = useRef(false);
   const [formError, setFormError] = useState("");
   const router = useRouter();
   const { data: session, isPending: sessionPending } = authClient.useSession();
@@ -28,6 +29,7 @@ export default function AuthPanel({ mode, callbackUrl = "/items", oauthError = f
 
   const submit = async (event) => {
     event.preventDefault();
+    if (submitting.current) return;
     setFormError("");
     const form = new FormData(event.currentTarget);
     const name = String(form.get("name") || "").trim();
@@ -59,6 +61,7 @@ export default function AuthPanel({ mode, callbackUrl = "/items", oauthError = f
       }
     }
 
+    submitting.current = true;
     setBusy(true);
     try {
       const callbackURL = `${window.location.origin}${safeDestination}`;
@@ -82,6 +85,7 @@ export default function AuthPanel({ mode, callbackUrl = "/items", oauthError = f
       setFormError(error.message || "The request could not be completed.");
       toast.error(error.message || "The request could not be completed.");
     } finally {
+      submitting.current = false;
       setBusy(false);
     }
   };
@@ -115,24 +119,6 @@ export default function AuthPanel({ mode, callbackUrl = "/items", oauthError = f
           ) : (
             <>
               <form onSubmit={submit} className="flex flex-col gap-4">
-                {isRegister && (
-                  <label className="block text-sm font-semibold">
-                    Profile image URL <span className="font-normal text-muted">(optional)</span>
-                    <span className="relative mt-2 block">
-                      <UserRound size={17} className="absolute left-4 top-5 text-muted" />
-                      <input
-                        name="image"
-                        type="url"
-                        autoComplete="url"
-                        placeholder="https://example.com/your-photo.jpg"
-                        className="min-h-14 w-full rounded-xl border border-line bg-background py-3 pl-11 pr-4 text-sm font-normal"
-                      />
-                    </span>
-                    <span className="mt-1.5 block text-xs font-normal leading-5 text-muted">
-                      Optional. Your first initial will appear if no image is provided or it cannot be loaded.
-                    </span>
-                  </label>
-                )}
                 {isRegister && (
                   <label className="block text-sm font-semibold">
                     Full name
@@ -213,6 +199,24 @@ export default function AuthPanel({ mode, callbackUrl = "/items", oauthError = f
                     </span>
                   </label>
                 )}
+                {isRegister && (
+                  <label className="block text-sm font-semibold">
+                    Profile image URL <span className="font-normal text-muted">(optional)</span>
+                    <span className="relative mt-2 block">
+                      <UserRound size={17} className="absolute left-4 top-5 text-muted" />
+                      <input
+                        name="image"
+                        type="url"
+                        autoComplete="url"
+                        placeholder="https://example.com/your-photo.jpg"
+                        className="min-h-14 w-full rounded-xl border border-line bg-background py-3 pl-11 pr-4 text-sm font-normal"
+                      />
+                    </span>
+                    <span className="mt-1.5 block text-xs font-normal leading-5 text-muted">
+                      Optional. Your first initial will appear if no image is provided or it cannot be loaded.
+                    </span>
+                  </label>
+                )}
                 {formError && <p role="alert" className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-800 dark:bg-red-950/30 dark:text-red-200">{formError}</p>}
                 <button
                   type="submit"
@@ -222,7 +226,7 @@ export default function AuthPanel({ mode, callbackUrl = "/items", oauthError = f
                   {busy ? (isRegister ? "Creating account…" : "Signing in…") : (isRegister ? "Create account" : "Sign in")}
                 </button>
               </form>
-              <GoogleLoginButton callbackUrl={safeDestination} />
+              <GoogleLoginButton callbackUrl={safeDestination} disabled={busy} />
               <p className="mt-6 text-center text-sm text-muted">
                 {isRegister ? "Already have an account?" : "New to SABA MODEST?"}{" "}
                 <Link

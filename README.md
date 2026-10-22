@@ -10,10 +10,9 @@ A responsive modest-fashion storefront built with Next.js App Router, Tailwind C
    ```dotenv
    NEXT_PUBLIC_API_URL=http://localhost:5000
    NEXT_PUBLIC_BETTER_AUTH_URL=http://localhost:3000
-   NEXT_PUBLIC_GOOGLE_AUTH_ENABLED=true
    ```
 
-   The Better Auth URL is the frontend origin served by Next.js; the same-origin route handler forwards auth calls and cookies to the backend. The Google flag controls whether the Google sign-in button is shown. Enable it only when both Google OAuth credentials are configured on the backend.
+   The Better Auth URL is the frontend origin served by Next.js; the same-origin route handler forwards auth calls and cookies to the backend. Google OAuth is handled by the backend's Better Auth provider configuration and is available when its existing Google OAuth credentials are configured there.
 3. Start the backend and frontend, then run `npm run dev`.
 4. Open `http://localhost:3000`.
 
