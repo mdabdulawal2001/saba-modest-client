@@ -165,7 +165,7 @@ export default function ManageProducts() {
 
   return (
     <>
-      {isPending || (loading && !error) ? (
+      {sessionPending || (loading && !error) ? (
         <div role="status" aria-label="Loading your products" className="animate-pulse">
           <span className="sr-only">Loading your products</span>
           <div aria-hidden="true" className="space-y-3 md:hidden">
