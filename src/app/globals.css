@@ -1,26 +1,191 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
+  --background: #faf8f4;
+  --surface: #fffdf9;
+  --foreground: #28251f;
+  --muted: #766f65;
+  --line: #e8e1d7;
+  --brand: #7b3f35;
+  --brand-dark: #613128;
+  --accent: #caa77b;
+  --toast-background: #ffffff;
+  --toast-foreground: #28251f;
+  --toast-border: #e8e1d7;
+}
+
+.dark {
+  color-scheme: dark;
+  --background: #181714;
+  --surface: #211f1b;
+  --foreground: #f6f0e7;
+  --muted: #b2a99d;
+  --line: #403b33;
+  --brand: #d79c89;
+  --brand-dark: #e5b7a7;
+  --accent: #d8b68a;
+  --toast-background: #211f1b;
+  --toast-foreground: #f6f0e7;
+  --toast-border: #403b33;
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-brand: var(--brand);
+  --color-accent: var(--accent);
+  --font-sans: Arial, Helvetica, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+* {
+  box-sizing: border-box;
+}
+
+.site-container {
+  width: 100%;
+  max-width: 1400px;
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 2rem);
+}
+
+@media (max-width: 639px) {
+  .navbar-container {
+    width: calc(100% - 1.5rem);
+    padding-inline: 0.75rem;
   }
 }
 
+@media (max-width: 359px) {
+  .navbar-container {
+    gap: 0.5rem;
+    padding-inline: 0.5rem;
+  }
+
+  .navbar-container > a:first-child {
+    gap: 0.375rem;
+  }
+
+  .navbar-container > a:first-child img {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .navbar-container > a:first-child > span > span:first-child {
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: clip;
+}
+
 body {
+  min-height: 100dvh;
+  margin: 0;
+  overflow-x: clip;
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--accent) 72%, transparent);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: #caa77b66;
+}
+
+.display-font {
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.wardrobe-section {
+  background-color: #f0e8dc;
+  background-image:
+    radial-gradient(ellipse at 85% 15%, rgb(202 167 123 / 18%), transparent 42%),
+    linear-gradient(125deg, #f5efe6 0%, #eee4d7 55%, #e8ddd0 100%);
+}
+
+.dark .wardrobe-section {
+  background-color: #211f1b;
+  background-image:
+    radial-gradient(ellipse at 85% 15%, rgb(215 156 137 / 12%), transparent 42%),
+    linear-gradient(125deg, #26231f 0%, #211f1b 55%, #1d1b18 100%);
+}
+
+#shop-results,
+#listings-results {
+  scroll-margin-top: 7rem;
+}
+
+.skeleton {
+  background: linear-gradient(
+    100deg,
+    color-mix(in srgb, var(--line) 70%, transparent) 25%,
+    color-mix(in srgb, var(--surface) 90%, white) 45%,
+    color-mix(in srgb, var(--line) 70%, transparent) 65%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+.swiper-pagination-bullet {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #fff;
+  opacity: 0.6;
+  transition: width 180ms ease, opacity 180ms ease;
+}
+
+.swiper-pagination-bullet-active {
+  width: 24px;
+  opacity: 1;
+}
+
+@keyframes skeleton-shimmer {
+  to {
+    background-position-x: -200%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

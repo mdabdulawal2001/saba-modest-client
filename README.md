@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# SABA MODEST storefront
 
-## Getting Started
+A responsive modest-fashion storefront built with Next.js App Router, Tailwind CSS v4, Better Auth, and the SABA MODEST REST API.
 
-First, run the development server:
+## Local development
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. Install dependencies with `npm install`.
+2. Set the frontend API origin in `.env.local`:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+   ```dotenv
+   NEXT_PUBLIC_API_URL=http://localhost:5000
+   NEXT_PUBLIC_BETTER_AUTH_URL=http://localhost:3000
+   NEXT_PUBLIC_GOOGLE_AUTH_ENABLED=true
+   ```
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+   The Better Auth URL is the frontend origin served by Next.js; the same-origin route handler forwards auth calls and cookies to the backend. The Google flag controls whether the Google sign-in button is shown. Enable it only when both Google OAuth credentials are configured on the backend.
+3. Start the backend and frontend, then run `npm run dev`.
+4. Open `http://localhost:3000`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The backend owns all authentication, session validation, product persistence, and product ownership checks. Next.js forwards auth and browser-side product requests to the configured backend, while server-rendered public catalog requests go directly to it. The frontend does not contain authentication secrets.
 
-## Learn More
+## Available routes
 
-To learn more about Next.js, take a look at the following resources:
+- `/` — home and featured catalog
+- `/items` — searchable, filterable catalog
+- `/items/[id]` — product details
+- `/about` — brand information
+- `/login` and `/register` — Better Auth email/password and optional Google sign-in
+- `/items/add` — authenticated product creation
+- `/items/manage` — authenticated management of the current user's own products
+- `/items/edit/[id]` — authenticated, confirmed editing for the current user's product
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Contact details
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Official contact destinations are intentionally left blank in `src/config/contact.js`; the storefront does not reuse contact information from the unrelated reference project. Supply the SABA MODEST Messenger URL, Facebook page URL, WhatsApp number in international format, phone number, and email address there. Until provided, the UI identifies each value as not configured instead of displaying or linking to invented details.
 
-## Deploy on Vercel
+The shop and home-page category cards use the backend-supported categories `Casual`, `Premium`, and `Party Wear`. The remaining three cards are clearly marked as coming soon and show an empty result rather than invented products.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Checks
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `npm run lint`
+- `npm run build`
