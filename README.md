@@ -1,41 +1,236 @@
-# SABA MODEST storefront
+# 🛍️ SABA MODEST — Modest Fashion Store
 
-A responsive modest-fashion storefront built with Next.js App Router, Tailwind CSS v4, Better Auth, and the SABA MODEST REST API.
+<p align="center">
+  A modern, full-stack e-commerce platform for discovering and managing modest fashion products.
+</p>
 
-## Local development
+<p align="center">
+  <a href="https://saba-modest-client.vercel.app/">
+    <img src="https://img.shields.io/badge/🚀_Live_Demo-Visit_Website-brightgreen?style=for-the-badge&logo=vercel" alt="Live Demo" />
+  </a>
+  <a href="https://github.com/mdabdulawal2001/saba-modest-client">
+    <img src="https://img.shields.io/badge/Frontend-GitHub-black?style=for-the-badge&logo=github" alt="Frontend Repository" />
+  </a>
+  <a href="https://github.com/mdabdulawal2001/saba-modest-server">
+    <img src="https://img.shields.io/badge/Backend-GitHub-blue?style=for-the-badge&logo=github" alt="Backend Repository" />
+  </a>
+  <a href="https://saba-modest-server.onrender.com/">
+    <img src="https://img.shields.io/badge/Backend_API-Live-success?style=for-the-badge&logo=render" alt="Backend API" />
+  </a>
+</p>
 
-1. Install dependencies with `npm install`.
-2. Set the frontend API origin in `.env.local`:
+---
 
-   ```dotenv
-   NEXT_PUBLIC_API_URL=http://localhost:5000
-   NEXT_PUBLIC_BETTER_AUTH_URL=http://localhost:3000
-   ```
+## 📸 Screenshot
 
-   The Better Auth URL is the frontend origin served by Next.js; the same-origin route handler forwards auth calls and cookies to the backend. Google OAuth is handled by the backend's Better Auth provider configuration and is available when its existing Google OAuth credentials are configured there.
-3. Start the backend and frontend, then run `npm run dev`.
-4. Open `http://localhost:3000`.
+<p align="center">
+  <img src="./saba-modest-screenshot.png" alt="SABA MODEST Website Screenshot" width="100%" />
+</p>
 
-The backend owns all authentication, session validation, product persistence, and product ownership checks. Next.js forwards auth and browser-side product requests to the configured backend, while server-rendered public catalog requests go directly to it. The frontend does not contain authentication secrets.
+---
 
-## Available routes
+## 📝 Project Overview
 
-- `/` — home and featured catalog
-- `/items` — searchable, filterable catalog
-- `/items/[id]` — product details
-- `/about` — brand information
-- `/login` and `/register` — Better Auth email/password and optional Google sign-in
-- `/items/add` — authenticated product creation
-- `/items/manage` — authenticated management of the current user's own products
-- `/items/edit/[id]` — authenticated, confirmed editing for the current user's product
+**SABA MODEST** is a modern, full-stack e-commerce platform designed for modest fashion shopping. It provides a user-friendly interface for exploring fashion products, viewing product details, and managing product listings.
 
-## Contact details
+The application uses a separate Next.js frontend and Express.js backend, with MongoDB for data storage and Better Auth for authentication.
 
-Official contact destinations are intentionally left blank in `src/config/contact.js`; the storefront does not reuse contact information from the unrelated reference project. Supply the SABA MODEST Messenger URL, Facebook page URL, WhatsApp number in international format, phone number, and email address there. Until provided, the UI identifies each value as not configured instead of displaying or linking to invented details.
+## ✨ Key Features
 
-The shop and home-page category cards use the backend-supported categories `Casual`, `Premium`, and `Party Wear`. The remaining three cards are clearly marked as coming soon and show an empty result rather than invented products.
+- 🛍️ Browse modest fashion products.
+- 🔎 Explore products by category.
+- 👗 View product details.
+- ➕ Add new products.
+- 📝 Manage existing product listings.
+- 🔐 User authentication with Better Auth.
+- 🌐 Google authentication integration.
+- 🗄️ MongoDB database integration.
+- 📱 Responsive design for desktop, tablet, and mobile.
+- 🎨 Modern UI with smooth animations.
+- 🔔 User-friendly notifications and loading states.
 
-## Checks
+## 🔗 Project Links
 
-- `npm run lint`
-- `npm run build`
+| Resource | Link |
+|---|---|
+| Live Website | [SABA MODEST](https://saba-modest-client.vercel.app/) |
+| Frontend Repository | [GitHub](https://github.com/mdabdulawal2001/saba-modest-client) |
+| Backend Repository | [GitHub](https://github.com/mdabdulawal2001/saba-modest-server) |
+| Live Backend API | [Render](https://saba-modest-server.onrender.com/) |
+
+## 🛠️ Technologies Used
+
+**Frontend**
+- Next.js
+- React
+- JavaScript
+- Tailwind CSS
+- HeroUI
+- Framer Motion
+- Better Auth
+
+**Backend**
+- Node.js
+- Express.js
+- MongoDB
+- Better Auth
+- dotenv
+
+**Deployment**
+- Vercel — Frontend
+- Render — Backend API
+
+---
+
+## 🚀 Run Locally
+
+### Prerequisites
+
+Make sure you have the following installed:
+
+- [Node.js](https://nodejs.org/)
+- npm (included with Node.js)
+- [Git](https://git-scm.com/)
+- A MongoDB database
+- Google OAuth credentials for Google sign-in
+
+### 1. Clone the Frontend
+
+```bash
+git clone https://github.com/mdabdulawal2001/saba-modest-client.git
+cd saba-modest-client
+npm install
+```
+
+### 2. Configure Frontend Environment Variables
+
+Create a `.env.local` file in the frontend project root:
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:5000
+NEXT_PUBLIC_BETTER_AUTH_URL=http://localhost:5000
+BETTER_AUTH_SECRET=your_better_auth_secret
+```
+
+Replace the example values with your actual configuration. The API URL and Better Auth URL must match the local backend/authentication setup.
+
+### 3. Start the Frontend
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+---
+
+### 4. Clone the Backend
+
+Open a **separate terminal**:
+
+```bash
+git clone https://github.com/mdabdulawal2001/saba-modest-server.git
+cd saba-modest-server
+npm install
+```
+
+### 5. Configure Backend Environment Variables
+
+Create a `.env` file in the backend project root:
+
+```env
+PORT=5000
+MONGODB_URI=your_mongodb_connection_string
+BETTER_AUTH_SECRET=your_better_auth_secret
+NEXT_PUBLIC_BETTER_AUTH_URL=http://localhost:5000
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+```
+
+Use the actual environment variable names expected by the backend code. Configure your Google OAuth credentials and callback URLs according to your Better Auth setup.
+
+> **Note:** `PORT=5000` is an example local port. If your backend uses another port, update the port and the corresponding frontend URLs accordingly. If the existing project uses different environment variable names or authentication URL conventions, follow the actual project configuration rather than renaming variables blindly.
+
+### 6. Start the Backend
+
+Check the `scripts` section of the backend's `package.json`. If it provides a `dev` script, run:
+
+```bash
+npm run dev
+```
+
+If the project uses a different start command, use the appropriate script from `package.json`.
+
+The frontend and backend must both be running for the complete local application to work.
+
+---
+
+## 🔐 Environment Variables
+
+| Variable | Purpose |
+|---|---|
+| `NEXT_PUBLIC_API_URL` | Backend API base URL used by the frontend |
+| `NEXT_PUBLIC_BETTER_AUTH_URL` | Better Auth URL, according to the project's configuration |
+| `BETTER_AUTH_SECRET` | Secret used for authentication-related security |
+| `MONGODB_URI` | MongoDB database connection string |
+| `GOOGLE_CLIENT_ID` | Google OAuth client ID |
+| `GOOGLE_CLIENT_SECRET` | Google OAuth client secret |
+
+**Security guidelines**
+
+- Never commit `.env`, `.env.local`, or real credentials to GitHub.
+- Keep `BETTER_AUTH_SECRET`, `MONGODB_URI`, and `GOOGLE_CLIENT_SECRET` private.
+- Variables beginning with `NEXT_PUBLIC_` can be exposed to the browser. Never place secrets in them.
+- Configure production environment variables in Vercel and Render settings.
+- Ensure the Google OAuth authorized origins and redirect URIs match your actual deployment and Better Auth configuration.
+
+---
+
+## 🏗️ Project Architecture
+
+```text
+SABA MODEST
+│
+├── saba-modest-client
+│   ├── Next.js
+│   ├── React UI
+│   ├── Authentication
+│   ├── Product Pages
+│   └── API Integration
+│
+└── saba-modest-server
+    ├── Node.js
+    ├── Express.js
+    ├── Better Auth
+    ├── API Routes
+    └── MongoDB
+```
+
+## 🌐 Deployment
+
+The frontend and backend are deployed separately.
+
+- **Frontend:** [Vercel](https://saba-modest-client.vercel.app/)
+- **Backend API:** [Render](https://saba-modest-server.onrender.com/)
+
+The deployed frontend communicates with the backend API to retrieve and manage application data.
+
+## 👨‍💻 Developer
+
+<p align="center">
+  Developed with ❤️ by
+</p>
+
+<h3 align="center">MD. ABDUL AWAL TOHA</h3>
+
+<p align="center">
+  <a href="https://github.com/mdabdulawal2001">
+    <img src="https://img.shields.io/badge/GitHub-Visit_Profile-black?style=for-the-badge&logo=github" alt="GitHub Profile" />
+  </a>
+</p>
+
+---
+
+<p align="center">
+  ⭐ Thanks for visiting SABA MODEST!
+</p>
