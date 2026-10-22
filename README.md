@@ -24,7 +24,7 @@
 ## 📸 Screenshot
 
 <p align="center">
-  <img src="./saba-modest-screenshot.png" alt="SABA MODEST Website Screenshot" width="100%" />
+  <img width="682" height="420" alt="Screenshot 2026-10-23 022930" src="https://github.com/user-attachments/assets/bde45fa3-7a6e-4cd9-94a2-cbaffa68a316" />
 </p>
 
 ---
