@@ -9,7 +9,7 @@ import ContactSection from "@/components/home/ContactSection";
 import Reveal from "@/components/shared/Reveal";
 import { ProductGridSkeleton } from "@/components/shared/Skeletons";
 import { siteConfig } from "@/config/site";
-import { getCategoryCounts } from "@/lib/api";
+import { getProductCategories } from "@/lib/api";
 
 export const metadata = {
   title: "Modest Fashion, Thoughtfully Chosen",
@@ -36,17 +36,15 @@ const values = [
 
 async function CategorySection() {
   await connection();
-  let categoryCounts = [];
+  let categories = [];
   try {
-    categoryCounts = await getCategoryCounts(siteConfig.categories);
+    categories = await getProductCategories();
   } catch (error) {
-    console.error("Could not load category counts:", error);
+    console.error("Could not load product categories:", error);
   }
-  const counts = new Map(categoryCounts.map(({ category, count }) => [category, count]));
-  const categoryCards = siteConfig.categoryCards.map((category) => ({
+  const categoryCards = categories.slice(0, 6).map((category, index) => ({
     ...category,
-    count: counts.has(category.name) ? counts.get(category.name) : null,
-    available: siteConfig.categories.includes(category.name),
+    image: siteConfig.categoryImages[index],
   }));
 
   return (
@@ -81,11 +79,7 @@ async function CategorySection() {
                   <span className="text-[10px] uppercase tracking-[0.18em] text-white/75">0{index + 1}</span>
                   <h3 className="display-font mt-2 text-2xl">{category.name}</h3>
                   <p className="mt-1 text-xs text-white/80">
-                    {category.available
-                      ? category.count === null
-                        ? "Count unavailable"
-                        : `${category.count} ${category.count === 1 ? "piece" : "pieces"}`
-                      : "Coming soon · 0 pieces"}
+                    {`${category.count} ${category.count === 1 ? "piece" : "pieces"}`}
                   </p>
                 </div>
                 <span className="grid h-10 w-10 place-items-center rounded-full border border-white/65 transition group-hover:bg-white group-hover:text-foreground">
@@ -95,6 +89,9 @@ async function CategorySection() {
             </Link>
           ))}
         </Reveal>
+        {!categoryCards.length && (
+          <p className="mt-8 text-sm text-muted">Categories will appear here when products are available.</p>
+        )}
       </section>
   );
 }

@@ -1,3 +1,5 @@
+import { normalizeCategory } from "@/lib/utils";
+
 const API_BASE_URL = (
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
 ).replace(/\/+$/, "");
@@ -80,13 +82,41 @@ export async function getProducts(params = {}) {
   };
 }
 
-export async function getCategoryCounts(categories) {
-  return Promise.all(
-    categories.map(async (category) => {
-      const result = await getProducts({ category, page: 1, limit: 1 });
-      return { category, count: Number(result.pagination?.total) || 0 };
-    }),
+export async function getProductCategories() {
+  const limit = 50;
+  const firstPage = await getProducts({ page: 1, limit });
+  const reportedPages = Number(firstPage.pagination?.totalPages);
+  const total = Number(firstPage.pagination?.total);
+  const totalPages = Math.max(
+    1,
+    Number.isFinite(reportedPages) && reportedPages > 0
+      ? reportedPages
+      : Math.ceil((Number.isFinite(total) ? total : 0) / limit),
   );
+  const categories = new Map();
+
+  const addCategories = (products) => {
+    products.forEach((product) => {
+      if (typeof product?.category !== "string") return;
+      const name = product.category.trim();
+      const key = normalizeCategory(name);
+      if (!key) return;
+
+      const category = categories.get(key) || { name, count: 0 };
+      category.count += 1;
+      categories.set(key, category);
+    });
+  };
+
+  addCategories(firstPage.items);
+  const remainingPages = await Promise.all(
+    Array.from({ length: totalPages - 1 }, (_, index) =>
+      getProducts({ page: index + 2, limit }),
+    ),
+  );
+  remainingPages.forEach(({ items }) => addCategories(items));
+
+  return [...categories.values()];
 }
 
 export async function getProductById(id) {

@@ -1,24 +1,22 @@
 import ItemsExplorer from "@/components/products/ItemsExplorer";
 import { ErrorState } from "@/components/shared/States";
-import { siteConfig } from "@/config/site";
-import { getProducts } from "@/lib/api";
+import { getProductCategories, getProducts } from "@/lib/api";
+import { normalizeCategory } from "@/lib/utils";
 
 const PAGE_SIZE = 12;
-const backendCategories = new Set(siteConfig.categories.map((category) => normalizeCategory(category)));
-
-function normalizeCategory(category) {
-  return String(category || "").trim().replace(/\s+/g, " ").toLocaleLowerCase();
-}
 
 export const metadata = {
   title: "Shop modest fashion",
   description: "Browse SABA MODEST three-piece outfits and modest fashion.",
 };
 
-function getInitialFilters(searchParams) {
-  const category = siteConfig.categoryCards.find(
-    ({ name }) => normalizeCategory(name) === normalizeCategory(searchParams.category),
-  )?.name || "";
+function getInitialFilters(searchParams, categories) {
+  const requestedCategory = typeof searchParams.category === "string"
+    ? searchParams.category.trim()
+    : "";
+  const category = categories.find(
+    (name) => normalizeCategory(name) === normalizeCategory(requestedCategory),
+  ) || requestedCategory;
   const sort = ["price_asc", "price_desc"].includes(searchParams.sort) ? searchParams.sort : "";
   return {
     search: typeof searchParams.search === "string" ? searchParams.search.slice(0, 100) : "",
@@ -31,36 +29,35 @@ function getInitialFilters(searchParams) {
 
 export default async function ItemsPage({ searchParams }) {
   const params = (await searchParams) || {};
-  const filters = getInitialFilters(params);
+  let categories = [];
+  try {
+    categories = (await getProductCategories()).map(({ name }) => name);
+  } catch (requestError) {
+    console.error("Could not load product categories for the shop:", requestError);
+  }
+  const filters = getInitialFilters(params, categories);
   const requestedPage = Math.max(1, Number.parseInt(params.page, 10) || 1);
   let result;
   let error = "";
 
-  if (filters.category && !backendCategories.has(normalizeCategory(filters.category))) {
-    result = {
-      items: [],
-      pagination: { page: 1, limit: PAGE_SIZE, total: 0, totalPages: 0 },
-    };
-  } else {
-    try {
+  try {
+    result = await getProducts({
+      ...filters,
+      page: requestedPage,
+      limit: PAGE_SIZE,
+      sort: filters.sort || undefined,
+    });
+    const totalPages = Number(result.pagination?.totalPages) || 0;
+    if (requestedPage > Math.max(totalPages, 1)) {
       result = await getProducts({
         ...filters,
-        page: requestedPage,
+        page: Math.max(totalPages, 1),
         limit: PAGE_SIZE,
         sort: filters.sort || undefined,
       });
-      const totalPages = Number(result.pagination?.totalPages) || 0;
-      if (requestedPage > Math.max(totalPages, 1)) {
-        result = await getProducts({
-          ...filters,
-          page: Math.max(totalPages, 1),
-          limit: PAGE_SIZE,
-          sort: filters.sort || undefined,
-        });
-      }
-    } catch (requestError) {
-      error = requestError.message;
     }
+  } catch (requestError) {
+    error = requestError.message;
   }
 
   return (
@@ -78,6 +75,7 @@ export default async function ItemsPage({ searchParams }) {
         <ItemsExplorer
           initialItems={result?.items || []}
           initialFilters={filters}
+          categoryOptions={categories}
           initialError=""
           initialPagination={result?.pagination}
           initialPage={result?.pagination?.page || 1}

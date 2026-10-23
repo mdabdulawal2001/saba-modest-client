@@ -10,6 +10,10 @@ export function getProductId(product) {
   return product?._id ?? product?.id ?? "";
 }
 
+export function normalizeCategory(category) {
+  return String(category || "").trim().replace(/\s+/g, " ").toLowerCase();
+}
+
 export function getSafeCallbackUrl(value, fallback = "/items") {
   if (typeof value !== "string" || !value.startsWith("/") || value.startsWith("//")) {
     return fallback;

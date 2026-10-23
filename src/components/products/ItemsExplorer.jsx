@@ -8,15 +8,10 @@ import ProductCard from "@/components/products/ProductCard";
 import { EmptyState, ErrorState } from "@/components/shared/States";
 import { ProductGridSkeleton } from "@/components/shared/Skeletons";
 import Pagination from "@/components/shared/Pagination";
-import { siteConfig } from "@/config/site";
 import { getProducts } from "@/lib/api";
+import { normalizeCategory } from "@/lib/utils";
 
 const PAGE_SIZE = 12;
-const backendCategories = new Set(siteConfig.categories.map((category) => normalizeCategory(category)));
-
-function normalizeCategory(category) {
-  return String(category || "").trim().replace(/\s+/g, " ").toLocaleLowerCase();
-}
 
 function buildQuery(filters, page, currentSearchParams) {
   const query = new URLSearchParams(currentSearchParams.toString());
@@ -28,10 +23,11 @@ function buildQuery(filters, page, currentSearchParams) {
   return query.toString();
 }
 
-function filtersFromSearchParams(searchParams) {
-  const category = siteConfig.categoryCards.find(
-    ({ name }) => normalizeCategory(name) === normalizeCategory(searchParams.get("category")),
-  )?.name || "";
+function filtersFromSearchParams(searchParams, categoryOptions) {
+  const requestedCategory = (searchParams.get("category") || "").trim();
+  const category = categoryOptions.find(
+    (name) => normalizeCategory(name) === normalizeCategory(requestedCategory),
+  ) || requestedCategory;
   const sort = searchParams.get("sort");
 
   return {
@@ -50,6 +46,7 @@ function filtersMatch(left, right) {
 export default function ItemsExplorer({
   initialItems,
   initialFilters,
+  categoryOptions,
   initialError,
   initialPagination,
   initialPage = 1,
@@ -116,24 +113,16 @@ export default function ItemsExplorer({
     }
 
     try {
-      if (nextFilters.category && !backendCategories.has(normalizeCategory(nextFilters.category))) {
-        if (currentRequest !== requestId.current) return;
-        setItems([]);
-        setPagination({ page: 1, total: 0, totalPages: 0, limit: PAGE_SIZE });
-        setPage(1);
-        currentState.current = { filters: nextFilters, page: 1 };
-      } else {
-        const result = await getProducts({
-          ...nextFilters,
-          page: nextPage,
-          limit: PAGE_SIZE,
-        });
-        if (currentRequest !== requestId.current) return;
-        setItems(result.items);
-        setPagination(result.pagination || { page: nextPage, total: result.items.length, totalPages: 1 });
-        setPage(nextPage);
-        currentState.current = { filters: nextFilters, page: nextPage };
-      }
+      const result = await getProducts({
+        ...nextFilters,
+        page: nextPage,
+        limit: PAGE_SIZE,
+      });
+      if (currentRequest !== requestId.current) return;
+      setItems(result.items);
+      setPagination(result.pagination || { page: nextPage, total: result.items.length, totalPages: 1 });
+      setPage(nextPage);
+      currentState.current = { filters: nextFilters, page: nextPage };
 
       if (scroll) {
         requestAnimationFrame(() => {
@@ -155,7 +144,7 @@ export default function ItemsExplorer({
     lastObservedQuery.current = queryString;
 
     const params = new URLSearchParams(queryString);
-    const nextFilters = filtersFromSearchParams(params);
+    const nextFilters = filtersFromSearchParams(params, categoryOptions);
     const requestedPage = Math.max(1, Number.parseInt(params.get("page"), 10) || 1);
     const { filters: currentFilters, page: currentPage } = currentState.current;
     if (filtersMatch(currentFilters, nextFilters) && currentPage === requestedPage) return;
@@ -196,6 +185,7 @@ export default function ItemsExplorer({
     initialPage,
     initialPagination,
     queryString,
+    categoryOptions,
   ]);
 
   useEffect(() => {
@@ -247,6 +237,9 @@ export default function ItemsExplorer({
   };
 
   const hasFilters = Object.values(filters).some(Boolean);
+  const hasSelectedCategoryOption = categoryOptions.some(
+    (name) => normalizeCategory(name) === normalizeCategory(filters.category),
+  );
   const total = Number(pagination?.total) || 0;
   const totalPages = Number(pagination?.totalPages) || 0;
 
@@ -273,7 +266,16 @@ export default function ItemsExplorer({
               className="min-h-12 w-full rounded-full border border-line bg-background px-4 text-sm text-foreground"
             >
               <option value="">All categories</option>
-              {siteConfig.categoryCards.map(({ name }) => <option key={name} value={name}>{name}</option>)}
+              {filters.category && !hasSelectedCategoryOption && (
+                <option value={filters.category}>{filters.category}</option>
+              )}
+              {categoryOptions.map((name) => (
+                <option key={normalizeCategory(name)} value={name}>
+                  {normalizeCategory(name) === normalizeCategory("All categories")
+                    ? `${name} (product category)`
+                    : name}
+                </option>
+              ))}
             </select>
           </label>
           <label>
