@@ -17,7 +17,7 @@ export default function AboutPage() {
         <p className="mt-6 max-w-2xl text-base leading-8 text-muted">
           SABA MODEST is a place to discover modest fashion and three-piece outfits with a little more ease. We believe getting dressed should feel comfortable, personal, and entirely your own.
         </p>
-        <Link href="/items" className="mt-8 inline-flex min-h-12 items-center gap-2 rounded-full bg-brand px-6 text-sm font-semibold text-white hover:opacity-90">
+        <Link href="/items" className="button-primary mt-8 inline-flex min-h-12 items-center gap-2 rounded-full px-6 text-sm font-semibold">
           Explore the collection <ArrowRight size={16} />
         </Link>
       </section>

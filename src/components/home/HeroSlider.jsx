@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useSyncExternalStore } from "react";
+import { useRef, useState, useSyncExternalStore } from "react";
 import { useReducedMotion } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { A11y, Autoplay } from "swiper/modules";
@@ -46,8 +46,20 @@ export default function HeroSlider() {
     () => false,
   );
   const reduceMotion = useReducedMotion();
-  const [swiper, setSwiper] = useState(null);
+  const swiperRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
+
+  const navigateToSlide = (index) => {
+    const swiper = swiperRef.current;
+    if (swiper && !swiper.destroyed) swiper.slideToLoop(index);
+  };
+
+  const navigateSlide = (direction) => {
+    const swiper = swiperRef.current;
+    if (!swiper || swiper.destroyed) return;
+    if (direction === "previous") swiper.slidePrev();
+    else swiper.slideNext();
+  };
 
   return (
     <section aria-label="Featured collection" className="site-container pt-4 sm:pt-6">
@@ -56,7 +68,10 @@ export default function HeroSlider() {
           <>
             <Swiper
               modules={[A11y, Autoplay]}
-              onSwiper={setSwiper}
+              onSwiper={(instance) => { swiperRef.current = instance; }}
+              onBeforeDestroy={(instance) => {
+                if (swiperRef.current === instance) swiperRef.current = null;
+              }}
               onSlideChange={(instance) => setActiveIndex(instance.realIndex)}
               slidesPerView={1}
               loop
@@ -92,7 +107,7 @@ export default function HeroSlider() {
                       </p>
                       <Link
                         href={slide.href}
-                        className="mt-7 inline-flex min-h-12 items-center justify-center rounded-full bg-[#f7eee2] px-6 text-sm font-semibold text-[#342822] transition hover:bg-white"
+                        className="button-secondary mt-7 inline-flex min-h-12 items-center justify-center rounded-full px-6 text-sm font-semibold"
                       >
                         {slide.action}
                       </Link>
@@ -110,7 +125,7 @@ export default function HeroSlider() {
                     type="button"
                     aria-label={`Show slide ${index + 1}: ${slide.title}`}
                     aria-current={activeIndex === index}
-                    onClick={() => swiper?.slideToLoop(index)}
+                    onClick={() => navigateToSlide(index)}
                     className={`h-2 rounded-full transition-all ${activeIndex === index ? "w-7 bg-white" : "w-2 bg-white/60 hover:bg-white"}`}
                   />
                 ))}
@@ -119,16 +134,16 @@ export default function HeroSlider() {
                 <button
                   type="button"
                   aria-label="Previous slide"
-                  onClick={() => swiper?.slidePrev()}
-                  className="grid h-10 w-10 place-items-center rounded-full border border-white/50 bg-black/15 backdrop-blur transition hover:bg-white hover:text-foreground"
+                  onClick={() => navigateSlide("previous")}
+                  className="button-overlay grid h-10 w-10 place-items-center rounded-full backdrop-blur"
                 >
                   <ArrowLeft size={17} />
                 </button>
                 <button
                   type="button"
                   aria-label="Next slide"
-                  onClick={() => swiper?.slideNext()}
-                  className="grid h-10 w-10 place-items-center rounded-full border border-white/50 bg-black/15 backdrop-blur transition hover:bg-white hover:text-foreground"
+                  onClick={() => navigateSlide("next")}
+                  className="button-overlay grid h-10 w-10 place-items-center rounded-full backdrop-blur"
                 >
                   <ArrowRight size={17} />
                 </button>
@@ -144,7 +159,7 @@ export default function HeroSlider() {
                 <p className="text-[10px] font-bold tracking-[0.24em] text-[#f0d4ae] sm:text-xs">{slides[0].eyebrow}</p>
                 <h1 className="display-font mt-5 max-w-xl text-4xl leading-[1.08] sm:text-5xl lg:text-7xl">{slides[0].title}</h1>
                 <p className="mt-5 max-w-lg text-sm leading-7 text-white/85 sm:text-base sm:leading-8">{slides[0].copy}</p>
-                <Link href={slides[0].href} className="mt-7 inline-flex min-h-12 items-center justify-center rounded-full bg-[#f7eee2] px-6 text-sm font-semibold text-[#342822]">{slides[0].action}</Link>
+                <Link href={slides[0].href} className="button-secondary mt-7 inline-flex min-h-12 items-center justify-center rounded-full px-6 text-sm font-semibold">{slides[0].action}</Link>
               </div>
             </div>
           </div>

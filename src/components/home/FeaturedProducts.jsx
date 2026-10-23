@@ -32,7 +32,7 @@ export default async function FeaturedProducts() {
             <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-brand">A few favorites</p>
             <h2 className="display-font mt-3 text-3xl sm:text-4xl">Featured pieces</h2>
           </div>
-          <Link href="/items" className="hidden items-center gap-2 text-sm font-semibold text-brand hover:underline sm:flex">
+          <Link href="/items" className="button-secondary hidden min-h-10 items-center gap-2 rounded-full px-4 text-sm font-semibold sm:flex">
             Shop all <ArrowRight size={16} />
           </Link>
         </div>
@@ -52,7 +52,7 @@ export default async function FeaturedProducts() {
             />
           )}
         </div>
-        <Link href="/items" className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-brand sm:hidden">
+        <Link href="/items" className="button-secondary mt-6 inline-flex min-h-10 items-center gap-2 rounded-full px-4 text-sm font-semibold sm:hidden">
           Shop all <ArrowRight size={16} />
         </Link>
       </div>

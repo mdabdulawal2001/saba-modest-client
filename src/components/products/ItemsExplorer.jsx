@@ -330,7 +330,7 @@ export default function ItemsExplorer({
           </label>
         </div>
         {hasFilters && (
-          <button type="button" onClick={resetFilters} className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-brand hover:underline">
+          <button type="button" onClick={resetFilters} className="button-quiet mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-brand hover:underline">
             <X size={14} /> Reset filters
           </button>
         )}

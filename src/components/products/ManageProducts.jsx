@@ -17,10 +17,10 @@ import Pagination from "@/components/shared/Pagination";
 function ProductActions({ onEdit, onDelete }) {
   return (
     <div className="flex items-center gap-2">
-      <button type="button" onClick={onEdit} className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-line px-3 text-xs font-semibold hover:bg-background">
+      <button type="button" onClick={onEdit} className="button-secondary inline-flex min-h-9 items-center gap-1.5 rounded-full px-3 text-xs font-semibold">
         <Pencil size={14} /> Edit
       </button>
-      <button type="button" onClick={onDelete} className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-red-200 px-3 text-xs font-semibold text-red-700 hover:bg-red-50 dark:border-red-900 dark:text-red-300 dark:hover:bg-red-950/30">
+      <button type="button" onClick={onDelete} className="button-danger inline-flex min-h-9 items-center gap-1.5 rounded-full px-3 text-xs font-semibold">
         <Trash2 size={14} /> Delete
       </button>
     </div>
@@ -202,7 +202,7 @@ export default function ManageProducts() {
         <div>
           <div id="listings-results" className="mb-4 flex scroll-mt-28 items-center justify-between">
             <p className="text-sm text-muted">{pagination?.total ?? products.length} {(pagination?.total ?? products.length) === 1 ? "product" : "products"} · Page {page} of {Math.max(Number(pagination?.totalPages) || 0, 1)}</p>
-            <Link href="/items/add" className="inline-flex min-h-10 items-center gap-2 rounded-full bg-brand px-4 text-xs font-semibold text-white hover:opacity-90"><Plus size={15} /> Add product</Link>
+            <Link href="/items/add" className="button-primary inline-flex min-h-10 items-center gap-2 rounded-full px-4 text-xs font-semibold"><Plus size={15} /> Add product</Link>
           </div>
           <div className="space-y-3 md:hidden">{itemRows(true)}</div>
           <div className="hidden overflow-hidden rounded-2xl border border-line bg-surface md:block">

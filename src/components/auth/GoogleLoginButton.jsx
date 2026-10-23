@@ -41,7 +41,7 @@ export default function GoogleLoginButton({ callbackUrl = "/items", disabled = f
         type="button"
         onClick={signIn}
         disabled={busy || disabled}
-        className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-3 rounded-full border border-line bg-surface text-sm font-semibold transition hover:border-brand/50 hover:bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+        className="button-secondary mt-5 inline-flex min-h-12 w-full items-center justify-center gap-3 rounded-full text-sm font-semibold disabled:cursor-not-allowed"
       >
         <FcGoogle aria-hidden="true" size={20} />
         {busy ? "Connecting to Google…" : "Continue with Google"}

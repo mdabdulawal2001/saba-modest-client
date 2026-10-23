@@ -82,7 +82,7 @@ async function CategorySection() {
                     {`${category.count} ${category.count === 1 ? "piece" : "pieces"}`}
                   </p>
                 </div>
-                <span className="grid h-10 w-10 place-items-center rounded-full border border-white/65 transition group-hover:bg-white group-hover:text-foreground">
+                <span className="button-overlay grid h-10 w-10 place-items-center rounded-full transition-colors group-hover:border-[#7d3e35] group-hover:bg-[#7d3e35] group-hover:text-white">
                   <ArrowRight size={17} />
                 </span>
               </div>
@@ -143,7 +143,7 @@ export default function HomePage() {
               Take a look through the current SABA MODEST catalog and find a style that feels like your own.
             </p>
           </div>
-          <Link href="/items" className="inline-flex min-h-12 w-fit shrink-0 items-center gap-2 rounded-full bg-brand px-6 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-brand-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand">
+          <Link href="/items" className="button-primary inline-flex min-h-12 w-fit shrink-0 items-center gap-2 rounded-full px-6 text-sm font-semibold">
             Explore the collection <ArrowRight size={16} />
           </Link>
         </div>

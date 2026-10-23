@@ -19,7 +19,7 @@ export default function ThemeToggle({ compact = false }) {
       onClick={() => setTheme(isDark ? "light" : "dark")}
       aria-label={mounted ? `Switch to ${isDark ? "light" : "dark"} theme` : "Change theme"}
       title="Change theme"
-      className={`inline-flex h-10 items-center justify-center gap-2 rounded-full border border-line text-foreground transition hover:border-brand/50 hover:bg-background ${compact ? "w-10" : "min-w-10 px-3"}`}
+      className={`button-secondary inline-flex h-10 items-center justify-center gap-2 rounded-full ${compact ? "w-10" : "min-w-10 px-3"}`}
     >
       {mounted && isDark ? <Sun size={17} /> : <Moon size={17} />}
       {!compact && <span className="sr-only sm:not-sr-only sm:text-xs">Theme</span>}

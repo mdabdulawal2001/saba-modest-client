@@ -16,7 +16,7 @@ export function EmptyState({
       {actionHref && actionLabel ? (
         <Link
           href={actionHref}
-          className="mt-5 inline-flex items-center gap-2 rounded-full bg-brand px-5 py-3 text-sm font-semibold text-white transition hover:opacity-90"
+          className="button-primary mt-5 inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold"
         >
           {actionLabel} <ArrowRight size={16} />
         </Link>
@@ -24,7 +24,7 @@ export function EmptyState({
         <button
           type="button"
           onClick={onAction}
-          className="mt-5 inline-flex items-center gap-2 rounded-full bg-brand px-5 py-3 text-sm font-semibold text-white transition hover:opacity-90"
+          className="button-primary mt-5 inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold"
         >
           {actionLabel} <ArrowRight size={16} />
         </button>
@@ -45,7 +45,7 @@ export function ErrorState({ message, onRetry }) {
         <button
           type="button"
           onClick={onRetry}
-          className="mt-5 rounded-full border border-current px-5 py-2.5 text-sm font-semibold hover:bg-white/60 dark:hover:bg-black/20"
+          className="button-secondary mt-5 rounded-full px-5 py-2.5 text-sm font-semibold"
         >
           Try again
         </button>

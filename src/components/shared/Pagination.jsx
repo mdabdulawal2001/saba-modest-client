@@ -29,7 +29,7 @@ export default function Pagination({
         type="button"
         onClick={() => onPageChange(currentPage - 1)}
         disabled={disabled || currentPage <= 1}
-        className="inline-flex min-h-11 items-center gap-1 rounded-full border border-line px-3 text-sm font-semibold transition-colors hover:bg-surface disabled:cursor-not-allowed disabled:opacity-45 sm:px-4"
+        className="button-secondary inline-flex min-h-11 items-center gap-1 rounded-full px-3 text-sm font-semibold disabled:cursor-not-allowed sm:px-4"
       >
         <ChevronLeft size={17} /> <span>Previous</span>
       </button>
@@ -47,8 +47,8 @@ export default function Pagination({
                 aria-current={item === currentPage ? "page" : undefined}
                 className={`grid min-h-10 min-w-10 place-items-center rounded-full text-sm font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${
                   item === currentPage
-                    ? "bg-brand text-white"
-                    : "border border-line text-foreground hover:bg-surface"
+                    ? "button-primary"
+                    : "button-secondary"
                 } disabled:cursor-default`}
               >
                 {item}
@@ -61,7 +61,7 @@ export default function Pagination({
         type="button"
         onClick={() => onPageChange(currentPage + 1)}
         disabled={disabled || currentPage >= totalPages}
-        className="inline-flex min-h-11 items-center gap-1 rounded-full border border-line px-3 text-sm font-semibold transition-colors hover:bg-surface disabled:cursor-not-allowed disabled:opacity-45 sm:px-4"
+        className="button-secondary inline-flex min-h-11 items-center gap-1 rounded-full px-3 text-sm font-semibold disabled:cursor-not-allowed sm:px-4"
       >
         <span>Next</span> <ChevronRight size={17} />
       </button>

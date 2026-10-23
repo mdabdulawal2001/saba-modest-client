@@ -38,9 +38,9 @@ export default function ProductCard({ product }) {
             {product.title}
           </p>
           <p className="mt-2 text-sm font-bold text-brand">{formatPrice(product.price)}</p>
-          <p className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-muted">
-            View details <ArrowUpRight size={14} />
-          </p>
+          <span className="button-primary mt-4 inline-flex min-h-10 items-center gap-2 rounded-full px-4 text-xs font-semibold">
+            View details <ArrowUpRight size={15} className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </span>
         </div>
       </Link>
     </motion.article>

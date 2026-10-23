@@ -199,7 +199,7 @@ export default function Navbar() {
                   type="button"
                   aria-expanded={profileOpen}
                   onClick={() => setProfileOpen((value) => !value)}
-                  className="inline-flex min-h-10 items-center gap-2 rounded-full border border-line px-3 text-sm font-semibold hover:bg-background"
+                  className="button-secondary inline-flex min-h-10 items-center gap-2 rounded-full px-3 text-sm font-semibold"
                 >
                   <UserAvatar user={user} className="h-8 w-8 text-xs" />
                   <span className="max-w-28 truncate">{user.name || "Account"}</span>
@@ -207,16 +207,16 @@ export default function Navbar() {
                 </button>
                 {profileOpen && (
                   <div className="absolute right-0 top-12 z-50 w-56 rounded-2xl border border-line bg-surface p-2 shadow-xl">
-                    <Link href="/items/manage" onClick={() => setProfileOpen(false)} className="flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm hover:bg-background">
+                    <Link href="/items/manage" onClick={() => setProfileOpen(false)} className="button-quiet flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm">
                       <ShoppingBag size={16} /> My Products
                     </Link>
-                    <Link href="/items/add" onClick={() => setProfileOpen(false)} className="flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm hover:bg-background">
+                    <Link href="/items/add" onClick={() => setProfileOpen(false)} className="button-quiet flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm">
                       <PackagePlus size={16} /> Add a product
                     </Link>
                     <button
                       type="button"
                       onClick={() => setLogoutOpen(true)}
-                      className="flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left text-sm text-red-700 hover:bg-red-50 dark:text-red-300 dark:hover:bg-red-950/30"
+                      className="button-quiet flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left text-sm text-red-700 dark:text-red-300"
                     >
                       <LogOut size={16} /> Sign out
                     </button>
@@ -225,10 +225,10 @@ export default function Navbar() {
               </div>
             ) : (
               <div className="hidden items-center gap-2 sm:flex">
-                <Link href="/login" className="rounded-full px-3 py-2 text-sm font-semibold text-foreground hover:bg-background">
+                <Link href="/login" className="button-quiet rounded-full px-3 py-2 text-sm font-semibold">
                   Sign in
                 </Link>
-                <Link href="/register" className="rounded-full bg-brand px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90">
+                <Link href="/register" className="button-primary rounded-full px-4 py-2.5 text-sm font-semibold">
                   Join us
                 </Link>
               </div>
@@ -240,7 +240,7 @@ export default function Navbar() {
               aria-expanded={mobileOpen}
               aria-controls="mobile-navigation"
               onClick={() => setMobileOpen((value) => !value)}
-              className="grid h-10 w-10 place-items-center rounded-full border border-line lg:hidden"
+              className="button-secondary grid h-10 w-10 place-items-center rounded-full lg:hidden"
             >
               {mobileOpen ? <X size={19} /> : <Menu size={19} />}
             </button>
@@ -280,7 +280,7 @@ export default function Navbar() {
                     type="button"
                     aria-label="Close navigation menu"
                     onClick={closeMobileMenu}
-                    className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-line bg-surface text-muted shadow-sm hover:bg-background"
+                    className="button-secondary grid h-9 w-9 shrink-0 place-items-center rounded-xl text-muted shadow-sm"
                   >
                     <X size={19} />
                   </button>
@@ -314,15 +314,15 @@ export default function Navbar() {
                     <div className="skeleton h-10 rounded-xl" aria-label="Loading account" />
                   ) : user ? (
                     <div className="grid gap-2">
-                      <Link href="/items/add" onClick={closeMobileMenu} className="rounded-xl px-4 py-3 text-sm font-medium text-muted hover:bg-background">Add a product</Link>
-                      <button type="button" onClick={() => { closeMobileMenu(); setLogoutOpen(true); }} className="flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-line bg-surface px-4 py-3 text-sm font-semibold text-red-700 shadow-sm hover:bg-red-50 dark:text-red-300 dark:hover:bg-red-950/30">
+                      <Link href="/items/add" onClick={closeMobileMenu} className="button-quiet rounded-xl px-4 py-3 text-sm font-medium text-muted">Add a product</Link>
+                      <button type="button" onClick={() => { closeMobileMenu(); setLogoutOpen(true); }} className="button-secondary flex min-h-11 w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold text-red-700 shadow-sm dark:text-red-300">
                         <LogOut size={16} /> Sign out
                       </button>
                     </div>
                   ) : (
                     <div className="grid gap-2">
-                      <Link href="/login" onClick={closeMobileMenu} className="rounded-xl border border-brand/40 px-4 py-3 text-center text-sm font-semibold text-brand hover:bg-brand/5">Sign in</Link>
-                      <Link href="/register" onClick={closeMobileMenu} className="rounded-xl bg-brand px-4 py-3 text-center text-sm font-semibold text-white shadow-sm hover:opacity-90">Join us</Link>
+                      <Link href="/login" onClick={closeMobileMenu} className="button-secondary rounded-xl px-4 py-3 text-center text-sm font-semibold">Sign in</Link>
+                      <Link href="/register" onClick={closeMobileMenu} className="button-primary rounded-xl px-4 py-3 text-center text-sm font-semibold shadow-sm">Join us</Link>
                     </div>
                   )}
                 </div>

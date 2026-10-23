@@ -18,14 +18,14 @@ export default function ManagementShell({ title, description, children }) {
         <aside aria-label="Product management" className="flex flex-col rounded-2xl border border-line bg-surface p-2">
           <nav className="grid grid-cols-2 gap-1 lg:grid-cols-1">
             {links.map(({ href, label, icon: Icon }) => (
-              <Link key={href} href={href} aria-current={["My Products", "Edit product"].includes(title) && href.endsWith("manage") || title === "Add a product" && href.endsWith("add") ? "page" : undefined} className={`flex min-h-11 items-center justify-center gap-2 rounded-xl px-3 text-sm font-medium text-muted hover:bg-background hover:text-brand lg:justify-start ${["My Products", "Edit product"].includes(title) && href.endsWith("manage") || title === "Add a product" && href.endsWith("add") ? "bg-brand/10 text-brand" : ""}`}>
+              <Link key={href} href={href} aria-current={["My Products", "Edit product"].includes(title) && href.endsWith("manage") || title === "Add a product" && href.endsWith("add") ? "page" : undefined} className={`button-quiet flex min-h-11 items-center justify-center gap-2 rounded-xl px-3 text-sm font-medium text-muted lg:justify-start ${["My Products", "Edit product"].includes(title) && href.endsWith("manage") || title === "Add a product" && href.endsWith("add") ? "bg-brand/10 text-brand" : ""}`}>
                 <Icon size={17} /> {label}
               </Link>
             ))}
           </nav>
           <Link
             href="/"
-            className="mt-auto hidden min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-medium text-muted hover:bg-background hover:text-brand lg:flex"
+            className="button-quiet mt-auto hidden min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-medium text-muted lg:flex"
           >
             <ArrowLeft size={17} /> Back to Home
           </Link>

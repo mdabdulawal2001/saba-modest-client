@@ -207,7 +207,7 @@ export default function AuthPanel({ mode, callbackUrl = "/", googleCallbackUrl =
                       type="button"
                       aria-label={passwordVisible ? "Hide password" : "Show password"}
                       onClick={() => setPasswordVisible((value) => !value)}
-                      className="absolute right-3 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-lg text-muted hover:bg-surface"
+                      className="button-quiet absolute right-3 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-lg text-muted"
                     >
                       {passwordVisible ? <EyeOff size={17} /> : <Eye size={17} />}
                     </button>
@@ -237,7 +237,7 @@ export default function AuthPanel({ mode, callbackUrl = "/", googleCallbackUrl =
                         type="button"
                         aria-label={confirmVisible ? "Hide password" : "Show password"}
                         onClick={() => setConfirmVisible((value) => !value)}
-                        className="absolute right-3 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-lg text-muted hover:bg-surface"
+                        className="button-quiet absolute right-3 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-lg text-muted"
                       >
                         {confirmVisible ? <EyeOff size={17} /> : <Eye size={17} />}
                       </button>
@@ -267,7 +267,7 @@ export default function AuthPanel({ mode, callbackUrl = "/", googleCallbackUrl =
                 <button
                   type="submit"
                   disabled={busy}
-                  className="mt-1 inline-flex min-h-12 items-center justify-center rounded-full bg-brand px-5 text-sm font-semibold text-white shadow-sm transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="button-primary mt-1 inline-flex min-h-12 items-center justify-center rounded-full px-5 text-sm font-semibold shadow-sm disabled:cursor-not-allowed"
                 >
                   {busy ? (isRegister ? "Creating account…" : "Signing in…") : (isRegister ? "Create account" : "Sign in")}
                 </button>

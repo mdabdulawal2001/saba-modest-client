@@ -106,7 +106,7 @@ export default function AddProductForm() {
         </label>
       </div>
       {error && <div className="mt-5"><ErrorState message={error} /></div>}
-      <button type="submit" disabled={busy} className="mt-7 inline-flex min-h-12 w-full items-center justify-center rounded-full bg-brand px-6 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-60 sm:w-auto">
+      <button type="submit" disabled={busy} className="button-primary mt-7 inline-flex min-h-12 w-full items-center justify-center rounded-full px-6 text-sm font-semibold">
         {busy ? "Adding product…" : "Add product"}
       </button>
     </form>

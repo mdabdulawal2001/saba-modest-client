@@ -136,8 +136,8 @@ export default function EditProductForm({ id }) {
         <label className="text-sm font-semibold sm:col-span-2">Description<textarea name="description" required maxLength={5000} rows={5} defaultValue={product.description} className={`${inputClass} py-3`} /></label>
         <label className="flex items-center gap-2 text-sm font-medium sm:col-span-2"><input name="featured" type="checkbox" defaultChecked={Boolean(product.featured)} /> Featured product</label>
         <div className="flex flex-col-reverse gap-3 sm:col-span-2 sm:flex-row sm:justify-end">
-          <button type="button" onClick={() => router.push("/items/manage")} className="min-h-11 rounded-full border border-line px-5 text-sm font-semibold">Cancel</button>
-          <button type="submit" className="min-h-11 rounded-full bg-brand px-5 text-sm font-semibold text-white hover:opacity-90">Review changes</button>
+          <button type="button" onClick={() => router.push("/items/manage")} className="button-secondary min-h-11 rounded-full px-5 text-sm font-semibold">Cancel</button>
+          <button type="submit" className="button-primary min-h-11 rounded-full px-5 text-sm font-semibold">Review changes</button>
         </div>
       </form>
       <ConfirmDialog

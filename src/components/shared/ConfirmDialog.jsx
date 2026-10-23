@@ -70,7 +70,7 @@ export default function ConfirmDialog({
                 aria-label="Close dialog"
                 disabled={busy}
                 onClick={onClose}
-                className="rounded-lg p-1 text-muted hover:bg-background disabled:opacity-50"
+                className="button-quiet rounded-lg p-1 text-muted"
               >
                 <X size={18} />
               </button>
@@ -87,7 +87,7 @@ export default function ConfirmDialog({
             type="button"
             disabled={busy}
             onClick={onClose}
-            className="min-h-11 rounded-full border border-line px-5 text-sm font-semibold hover:bg-background disabled:opacity-50"
+            className="button-secondary min-h-11 rounded-full px-5 text-sm font-semibold"
           >
             {cancelLabel}
           </button>
@@ -95,8 +95,8 @@ export default function ConfirmDialog({
             type="button"
             disabled={busy}
             onClick={onConfirm}
-            className={`inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 text-sm font-semibold text-white disabled:opacity-60 ${
-              tone === "primary" ? "bg-brand hover:opacity-90" : "bg-red-700 hover:bg-red-800"
+            className={`inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 text-sm font-semibold ${
+              tone === "primary" ? "button-primary" : "button-danger"
             }`}
           >
             {busy && <LoaderCircle size={16} className="animate-spin" />}
