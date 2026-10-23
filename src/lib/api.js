@@ -74,7 +74,52 @@ function buildQuery(params = {}) {
 
 export async function getProducts(params = {}) {
   const query = buildQuery({ page: 1, limit: 50, ...params });
-  const payload = await request(`/api/products${query ? `?${query}` : ""}`);
+  let payload;
+  try {
+    payload = await request(`/api/products${query ? `?${query}` : ""}`);
+  } catch (error) {
+    // Some backend deployments still validate categories against a fixed list.
+    // Keep the existing category query for supported values, but handle dynamic
+    // product categories locally when the backend rejects the category value.
+    if (
+      !params.category
+      || !/category must be one of/i.test(error.message)
+    ) {
+      throw error;
+    }
+
+    const { category, ...otherFilters } = params;
+    const page = Math.max(1, Number.parseInt(otherFilters.page, 10) || 1);
+    const limit = Math.max(1, Number.parseInt(otherFilters.limit, 10) || 50);
+    const firstPage = await getProducts({ ...otherFilters, page: 1, limit: 50 });
+    const totalPages = Math.max(
+      1,
+      Number(firstPage.pagination?.totalPages)
+        || Math.ceil((Number(firstPage.pagination?.total) || firstPage.items.length) / 50),
+    );
+    const remainingPages = await Promise.all(
+      Array.from({ length: totalPages - 1 }, (_, index) =>
+        getProducts({ ...otherFilters, page: index + 2, limit: 50 }),
+      ),
+    );
+    const allItems = [firstPage.items, ...remainingPages.map(({ items }) => items)].flat();
+    const normalizedCategory = normalizeCategory(category);
+    const matchingItems = allItems.filter(
+      (product) => normalizeCategory(product?.category) === normalizedCategory,
+    );
+    const start = (page - 1) * limit;
+
+    return {
+      items: matchingItems.slice(start, start + limit),
+      pagination: {
+        ...(firstPage.pagination || {}),
+        page,
+        limit,
+        total: matchingItems.length,
+        totalPages: Math.ceil(matchingItems.length / limit),
+      },
+    };
+  }
 
   return {
     items: Array.isArray(payload?.data) ? payload.data : Array.isArray(payload) ? payload : [],
