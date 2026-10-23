@@ -101,7 +101,7 @@ export default function AddProductForm() {
           <textarea name="description" required maxLength={5000} rows={6} defaultValue="" className={`${fieldClass} py-3`} placeholder="Share the details shoppers should know about this piece." />
         </label>
         <label className="flex items-center gap-3 text-sm font-medium sm:col-span-2">
-          <input name="featured" type="checkbox" className="h-4 w-4 accent-[#7b3f35]" />
+          <input name="featured" type="checkbox" className="h-4 w-4 accent-[#173b83]" />
           Request this product to be featured
         </label>
       </div>

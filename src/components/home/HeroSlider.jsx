@@ -63,7 +63,7 @@ export default function HeroSlider() {
 
   return (
     <section aria-label="Featured collection" className="site-container pt-4 sm:pt-6">
-      <div className="relative overflow-hidden rounded-[1.6rem] bg-[#39342e] text-white sm:rounded-[2rem]">
+      <div className="relative overflow-hidden rounded-[1.6rem] bg-[#0f192a] text-white sm:rounded-[2rem]">
         {mounted ? (
           <>
             <Swiper
@@ -96,7 +96,7 @@ export default function HeroSlider() {
                   </div>
                   <div className="relative flex h-full items-center px-6 pb-16 pt-10 sm:px-12 lg:px-20">
                     <div className="max-w-2xl">
-                      <p className="text-[10px] font-bold tracking-[0.24em] text-[#f0d4ae] sm:text-xs">
+                      <p className="text-[10px] font-bold tracking-[0.24em] text-[#b6eff3] sm:text-xs">
                         {slide.eyebrow}
                       </p>
                       <h1 className="display-font mt-5 max-w-xl text-4xl leading-[1.08] sm:text-5xl lg:text-7xl">
@@ -107,7 +107,7 @@ export default function HeroSlider() {
                       </p>
                       <Link
                         href={slide.href}
-                        className="button-secondary mt-7 inline-flex min-h-12 items-center justify-center rounded-full px-6 text-sm font-semibold"
+                        className="button-hero mt-7 inline-flex min-h-12 items-center justify-center rounded-full px-6 text-sm font-semibold"
                       >
                         {slide.action}
                       </Link>
@@ -156,10 +156,10 @@ export default function HeroSlider() {
             <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/45 to-black/10" />
             <div className="relative flex h-full items-center px-6 pb-16 pt-10 sm:px-12 lg:px-20">
               <div className="max-w-2xl">
-                <p className="text-[10px] font-bold tracking-[0.24em] text-[#f0d4ae] sm:text-xs">{slides[0].eyebrow}</p>
+                <p className="text-[10px] font-bold tracking-[0.24em] text-[#b6eff3] sm:text-xs">{slides[0].eyebrow}</p>
                 <h1 className="display-font mt-5 max-w-xl text-4xl leading-[1.08] sm:text-5xl lg:text-7xl">{slides[0].title}</h1>
                 <p className="mt-5 max-w-lg text-sm leading-7 text-white/85 sm:text-base sm:leading-8">{slides[0].copy}</p>
-                <Link href={slides[0].href} className="button-secondary mt-7 inline-flex min-h-12 items-center justify-center rounded-full px-6 text-sm font-semibold">{slides[0].action}</Link>
+                <Link href={slides[0].href} className="button-hero mt-7 inline-flex min-h-12 items-center justify-center rounded-full px-6 text-sm font-semibold">{slides[0].action}</Link>
               </div>
             </div>
           </div>

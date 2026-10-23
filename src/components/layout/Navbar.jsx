@@ -158,9 +158,9 @@ export default function Navbar() {
       <header className="sticky top-0 z-50 pt-3">
         <nav
           aria-label="Main navigation"
-          className="site-container navbar-container flex min-h-[68px] items-center justify-between gap-3 rounded-2xl border border-line/80 bg-surface/90 shadow-[0_12px_40px_rgba(40,37,31,0.08)] backdrop-blur-xl"
+          className="site-container navbar-container flex min-h-[68px] items-center justify-between gap-3 rounded-2xl border border-line/80 bg-surface/90 shadow-[0_12px_36px_rgba(23,59,131,0.10)] backdrop-blur-xl"
         >
-          <Link href="/" className="flex shrink-0 items-center gap-2" aria-label={`${siteConfig.name} home`}>
+          <Link href="/" className="flex shrink-0 items-center gap-1.5" aria-label={`${siteConfig.name} home`}>
             <Image src={siteConfig.logo} alt={siteConfig.logoAlt} width={44} height={44} priority />
             <span className="leading-tight">
               <span className="block text-sm font-extrabold tracking-[0.12em] text-brand sm:text-base">
@@ -271,8 +271,8 @@ export default function Navbar() {
                 exit={{ x: "100%" }}
                 transition={{ duration: reduceMotion ? 0 : 0.24, ease: [0.22, 1, 0.36, 1] }}
               >
-                <div className="flex h-[76px] min-h-[76px] shrink-0 items-center justify-between border-b border-line bg-gradient-to-r from-surface via-brand/5 to-accent/10 px-4">
-                  <Link href="/" onClick={closeMobileMenu} className="flex min-w-0 items-center gap-2">
+                <div className="flex h-[76px] min-h-[76px] shrink-0 items-center justify-between border-b border-line bg-section-alt px-4">
+                  <Link href="/" onClick={closeMobileMenu} className="flex min-w-0 items-center gap-1.5">
                     <Image src={siteConfig.logo} alt="" width={42} height={42} />
                     <span className="truncate text-sm font-extrabold tracking-[0.1em] text-brand">{siteConfig.name}</span>
                   </Link>
@@ -287,7 +287,7 @@ export default function Navbar() {
                 </div>
                 <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain bg-surface px-4 py-5">
                   {!isPending && user && (
-                    <div className="mb-4 flex flex-col items-center rounded-2xl border border-brand/15 bg-gradient-to-br from-brand/10 via-surface to-accent/10 px-3 py-4 text-center shadow-sm">
+                    <div className="mb-4 flex flex-col items-center rounded-2xl border border-line bg-section-alt px-3 py-4 text-center">
                       <UserAvatar user={user} className="h-16 w-16 text-xl" />
                       <p className="mt-3 max-w-full truncate text-sm font-bold">{user.name?.trim() || "User"}</p>
                       {user.email && <p className="mt-1 max-w-full truncate text-xs text-muted">{user.email}</p>}

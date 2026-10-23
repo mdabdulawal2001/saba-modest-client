@@ -63,7 +63,7 @@ async function CategorySection() {
             <Link
               href={`/items?category=${encodeURIComponent(category.name)}`}
               key={category.name}
-              className="group relative isolate flex min-h-64 overflow-hidden rounded-3xl bg-[#473b32] transition duration-300 hover:-translate-y-1 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand sm:min-h-80"
+              className="group relative isolate flex min-h-64 overflow-hidden rounded-3xl bg-[#173b83] transition duration-300 hover:-translate-y-1 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand motion-reduce:transform-none sm:min-h-80"
             >
               <Image
                 src={category.image}
@@ -82,7 +82,7 @@ async function CategorySection() {
                     {`${category.count} ${category.count === 1 ? "piece" : "pieces"}`}
                   </p>
                 </div>
-                <span className="button-overlay grid h-10 w-10 place-items-center rounded-full transition-colors group-hover:border-[#7d3e35] group-hover:bg-[#7d3e35] group-hover:text-white">
+                <span className="button-overlay grid h-10 w-10 place-items-center rounded-full transition-colors group-hover:border-[#2456c5] group-hover:bg-[#2456c5] group-hover:text-white">
                   <ArrowRight size={17} />
                 </span>
               </div>

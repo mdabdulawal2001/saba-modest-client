@@ -6,11 +6,13 @@ import ContactOptions from "@/components/shared/ContactOptions";
 
 export default function Footer() {
   return (
-    <footer className="mt-auto border-t border-line bg-surface">
+    <footer className="site-footer mt-auto border-t">
       <div className="site-container grid items-start gap-x-10 gap-y-10 py-12 sm:grid-cols-2 sm:py-14 lg:grid-cols-12 lg:py-16">
         <div className="lg:col-span-4">
-          <Link href="/" className="inline-flex items-center gap-3">
-            <Image src={siteConfig.logo} alt="" width={48} height={48} />
+          <Link href="/" className="inline-flex items-center gap-1.5">
+            <span className="relative h-12 w-7 shrink-0 overflow-hidden" aria-hidden="true">
+              <Image src={siteConfig.logo} alt="" width={48} height={48} className="absolute -left-2.5 top-0 max-w-none" />
+            </span>
             <span className="text-sm font-extrabold tracking-[0.14em] text-brand">{siteConfig.name}</span>
           </Link>
           <p className="mt-4 max-w-sm text-left text-sm leading-7 text-muted">
@@ -22,12 +24,12 @@ export default function Footer() {
           <ul className="mt-5 space-y-3 text-sm text-muted">
             <li><Link className="transition hover:text-brand hover:underline" href="/items">Shop all</Link></li>
             <li><Link className="transition hover:text-brand hover:underline" href="/about">About us</Link></li>
-            <li><Link className="transition hover:text-brand hover:underline" href="/login">Sign in</Link></li>
+            <li><a className="transition hover:text-brand hover:underline" href="/login">Sign in</a></li>
           </ul>
         </div>
         <div className="lg:col-span-3">
           <h2 className="text-sm font-bold uppercase tracking-[0.14em] text-foreground">For sellers</h2>
-          <Link href="/items/add" className="mt-5 inline-flex items-center gap-2 text-sm text-muted hover:text-brand">
+          <Link href="/items/add" className="mt-5 inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-brand">
             Share a product <ArrowUpRight size={15} />
           </Link>
           <p className="mt-3 max-w-xs text-xs leading-6 text-muted">

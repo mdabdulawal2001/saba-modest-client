@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: "SABA MODEST",
   tagline: "Modest style, thoughtfully chosen",
-  logo: "/images/saba-modest-logo.svg",
+  logo: "/images/saba-modest-logo.png",
   logoAlt: "Saba Modest",
   description:
     "Thoughtfully selected modest fashion and three-piece outfits for everyday elegance.",

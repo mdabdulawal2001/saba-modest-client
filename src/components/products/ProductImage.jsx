@@ -17,7 +17,7 @@ export default function ProductImage({
   const validSource = typeof src === "string" && /^https?:\/\//i.test(src);
 
   return (
-    <div className={`${absolute ? "absolute inset-0" : "relative"} overflow-hidden bg-[#eee7dc] dark:bg-[#332f28] ${containerClass}`}>
+    <div className={`${absolute ? "absolute inset-0" : "relative"} overflow-hidden bg-section-alt ${containerClass}`}>
       {validSource && !failed ? (
         <Image
           src={src}
@@ -29,7 +29,7 @@ export default function ProductImage({
           className={imageClass}
         />
       ) : (
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-gradient-to-br from-[#e8ddd1] to-[#c9ad97] text-[#694c40] dark:from-[#4a4037] dark:to-[#332b25] dark:text-[#e5cbb7]">
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-section-alt text-brand">
           <ImageOff size={20} strokeWidth={1.5} />
           {placeholderLabel && <span className="text-center text-[10px] tracking-[0.12em]">{placeholderLabel}</span>}
         </div>

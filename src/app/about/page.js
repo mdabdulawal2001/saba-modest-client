@@ -24,7 +24,7 @@ export default function AboutPage() {
 
       <section className="border-y border-line bg-surface">
         <div className="site-container grid gap-10 py-14 sm:py-18 md:grid-cols-2 md:items-center">
-          <div className="rounded-[2rem] bg-[#e8ddd1] p-8 dark:bg-[#332f28] sm:p-12">
+          <div className="rounded-[2rem] bg-section-alt p-8 sm:p-12">
             <p className="display-font text-3xl leading-snug sm:text-4xl">
               “The best style is the one that lets you feel at home in yourself.”
             </p>

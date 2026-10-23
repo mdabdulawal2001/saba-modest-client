@@ -14,12 +14,12 @@ export default function ProductCard({ product }) {
       initial={reduceMotion ? false : { opacity: 0, y: 12 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.1 }}
-      whileHover={reduceMotion ? undefined : { y: -4, boxShadow: "0 16px 40px rgba(40,37,31,0.10)" }}
+      whileHover={reduceMotion ? undefined : { y: -4, boxShadow: "0 16px 40px rgba(23,59,131,0.14)" }}
       whileTap={reduceMotion ? undefined : { scale: 0.99 }}
       transition={{ duration: 0.28, ease: "easeOut" }}
     >
       <Link href={`/items/${getProductId(product)}`} className="block">
-        <div className="relative aspect-[4/5] overflow-hidden bg-[#eee7dc] dark:bg-[#332f28]">
+        <div className="relative aspect-[4/5] overflow-hidden bg-section-alt">
           <ProductImage
             src={product.image}
             alt={product.title || "Modest fashion product"}

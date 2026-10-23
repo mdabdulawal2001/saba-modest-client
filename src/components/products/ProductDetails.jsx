@@ -11,7 +11,7 @@ export default function ProductDetails({ product, relatedProducts = [], relatedE
         <ArrowLeft size={16} /> Back to the collection
       </Link>
       <div className="mt-6 grid gap-8 lg:grid-cols-2 lg:gap-14">
-        <div className="relative aspect-[4/5] max-h-[760px] overflow-hidden rounded-[1.8rem] bg-[#eee7dc] dark:bg-[#332f28]">
+        <div className="relative aspect-[4/5] max-h-[760px] overflow-hidden rounded-[1.8rem] bg-section-alt">
           <ProductImage
             src={product.image}
             alt={product.title}

@@ -127,7 +127,7 @@ export default function AuthPanel({ mode, callbackUrl = "/", googleCallbackUrl =
 
   return (
     <div className="mx-auto my-10 w-full max-w-md px-4 sm:my-14 sm:px-0">
-      <section className="relative overflow-hidden rounded-[1.8rem] border border-line bg-surface p-6 shadow-[0_22px_80px_rgba(40,37,31,0.08)] sm:p-9">
+      <section className="relative overflow-hidden rounded-[1.8rem] border border-line bg-surface p-6 shadow-[0_22px_70px_rgba(23,59,131,0.10)] sm:p-9">
         <div aria-hidden="true" className="pointer-events-none absolute -right-20 -top-20 h-48 w-48 rounded-full bg-brand/10 blur-3xl" />
         <div aria-hidden="true" className="pointer-events-none absolute -bottom-24 -left-20 h-48 w-48 rounded-full bg-accent/15 blur-3xl" />
         <div className="relative">
